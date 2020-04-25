@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import RestaurantScreenStacks from "./RestaurantStacks";
 import TopListScreenStacks from "./TopListsStacks";
 import SearchListScreenStacks from "./SearchStacks";
+import AccountScreenStacks from "./account/Account";
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -50,10 +51,24 @@ const NavigationStacks = createBottomTabNavigator(
         ),
       }),
     },
+    AccountList: {
+      screen: AccountScreenStacks,
+      navigationOptions: () => ({
+        tabBarLabel: "Account",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="magnify"
+            size={22}
+            color={tintColor}
+          />
+        ),
+      }),
+    },
   },
   {
     initialRouteName: "Restaurants",
-    order: ["Restaurants", "TopLists", "SearchList"],
+    order: ["Restaurants", "TopLists", "SearchList", "AccountList"],
     tabBarOptions: {
       inactiveTintColor: "#646464",
       activeTintColor: "#00a680",
