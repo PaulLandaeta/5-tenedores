@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import AccountScreen from "../../screens/Account";
+import AccountScreen from "../../screens/account/Account";
 
 export const AccountScreenStacks = createStackNavigator({
   Restaurants: {

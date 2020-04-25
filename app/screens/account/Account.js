@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
-import Loaging from "../components/Loading";
+import Loaging from "../../components/Loading";
 import * as firebase from "firebase";
+import UserGuest from "./UserGuest";
+import UserLogged from "./UserLogged";
 export default function AccountScreen() {
   const [login, setLogin] = useState(null);
 
@@ -16,16 +18,8 @@ export default function AccountScreen() {
   }
 
   if (login) {
-    return (
-      <View>
-        <Text>Logeado</Text>
-      </View>
-    );
+    return <UserLogged />;
   } else {
-    return (
-      <View>
-        <Text>No Logeado</Text>
-      </View>
-    );
+    return <UserGuest />;
   }
 }
