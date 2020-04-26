@@ -3,7 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { validateEmail } from "../../utils/Validation";
 import * as firebase from "firebase";
-export default function RegisterForm() {
+export default function RegisterForm(props) {
+  const { toastRef } = props;
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,17 +13,23 @@ export default function RegisterForm() {
   const register = async () => {
     if (!email || !password || !repeatPassword) {
       console.log("todos los campos son requeridos");
+      toastRef.current.show("todos los campos son obligatorios");
     }
     if (!validateEmail(email)) {
       console.log("el email no es correcto");
+      toastRef.current.show("el email no es valido");
     } else if (password != repeatPassword) {
       console.log("los password no son iguales");
+      toastRef.current.show("los passwords no son iguales");
     } else {
       await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => console.log("ususario creado"))
-        .catch((e) => console.log("error", e));
+        .catch((e) => {
+          console.log("error", e);
+          toastRef.current.show("Error al crear la cuenta");
+        });
     }
   };
   return (
