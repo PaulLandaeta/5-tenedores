@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import Modal from "../Modal";
 import ChangeDisplayEmail from "../account/ChangeDisplayEmail";
 import ChangeDisplayName from "../account/ChangeDisplayName";
 import ChangeDisplayPassword from "../account/ChangeDisplayPassword";
-export default function AccountOptions() {
+export default function AccountOptions(props) {
+  const { userInfo, toastRef, setReloadData } = props;
+  console.log(userInfo);
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [renderComponent, setRenderComponent] = useState(null);
 
@@ -49,17 +51,38 @@ export default function AccountOptions() {
     switch (key) {
       case "displayName":
         console.log("name");
-        setRenderComponent(<ChangeDisplayName />);
+        setRenderComponent(
+          <ChangeDisplayName
+            displayName={userInfo.displayName}
+            setVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
         setIsVisibleModal(true);
         break;
       case "displayPassword":
         console.log("password");
-        setRenderComponent(<ChangeDisplayPassword />);
+        setRenderComponent(
+          <ChangeDisplayPassword
+            displayEmail={userInfo.email}
+            setVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
         setIsVisibleModal(true);
         break;
       case "displayEmail":
         console.log("displayEmail");
-        setRenderComponent(<ChangeDisplayEmail />);
+        setRenderComponent(
+          <ChangeDisplayEmail
+            displayEmail={userInfo.email}
+            setVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
         setIsVisibleModal(true);
         break;
       default:
