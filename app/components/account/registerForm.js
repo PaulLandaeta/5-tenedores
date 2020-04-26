@@ -1,16 +1,29 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
-
+import { validateEmail } from "../../utils/Validation";
+import * as firebase from "firebase";
 export default function RegisterForm() {
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
-  const register = () => {
-    console.log(email);
-    console.log(password);
+  const register = async () => {
+    if (!email || !password || !repeatPassword) {
+      console.log("todos los campos son requeridos");
+    }
+    if (!validateEmail(email)) {
+      console.log("el email no es correcto");
+    } else if (password != repeatPassword) {
+      console.log("los password no son iguales");
+    } else {
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => console.log("ususario creado"))
+        .catch((e) => console.log("error", e));
+    }
   };
   return (
     <View style={styles.formContainer} behavior="padding" enabled>
