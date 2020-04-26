@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { validateEmail } from "../../utils/Validation";
+import { withNavigation } from "react-navigation";
 import * as firebase from "firebase";
-export default function RegisterForm(props) {
-  const { toastRef } = props;
+import Loading from "../Loading";
+function RegisterForm(props) {
+  const { toastRef, navigation } = props;
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [useLoading, setUseLoading] = useState(false);
 
   const register = async () => {
+    setUseLoading(true);
     if (!email || !password || !repeatPassword) {
       console.log("todos los campos son requeridos");
       toastRef.current.show("todos los campos son obligatorios");
@@ -25,12 +29,16 @@ export default function RegisterForm(props) {
       await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => console.log("ususario creado"))
+        .then(() => {
+          console.log("ususario creado");
+          navigation.navigate("Restaurants");
+        })
         .catch((e) => {
           console.log("error", e);
           toastRef.current.show("Error al crear la cuenta");
         });
     }
+    setUseLoading(false);
   };
   return (
     <View style={styles.formContainer} behavior="padding" enabled>
@@ -83,9 +91,12 @@ export default function RegisterForm(props) {
         buttonStyle={styles.btnRegister}
         onPress={() => register()}
       />
+      <Loading text="Creando cuenta" isVisible={useLoading} />
     </View>
   );
 }
+
+export default withNavigation(RegisterForm);
 
 const styles = StyleSheet.create({
   formContainer: {
